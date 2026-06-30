@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Esteban Martinez DJ - ¿Quien es esteban martinez?</title>
-    <!-- Fuente premium para un look artístico y limpio -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;500;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;500;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-premium: #070708;
+            --bg-premium: #060608;
             --gold-primary: #e6b960;
             --gold-light: #fff3d1;
             --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 100%);
-            --glass-card: rgba(15, 15, 18, 0.65);
-            --border-gold: rgba(230, 185, 96, 0.15);
+            --glass-card: rgba(18, 18, 24, 0.7);
+            --glass-border: rgba(230, 185, 96, 0.2);
         }
 
         * {
@@ -33,11 +32,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
-        /* --- DETALLES DE ILUMINACIÓN DE FONDO --- */
+        /* --- ILUMINACIÓN AMBIENTAL FLUIDA --- */
         .ambient-glow {
             position: absolute;
             width: 100%;
@@ -53,13 +52,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(230, 185, 96, 0.08) 0%, rgba(0,0,0,0) 70%);
-            filter: blur(60px);
+            width: 750px;
+            height: 750px;
+            background: radial-gradient(circle, rgba(230, 185, 96, 0.07) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(80px);
         }
 
-        /* Fondo de partículas y destellos */
+        /* Lienzo interactivo de destellos dorados */
         #particle-canvas {
             position: absolute;
             top: 0;
@@ -70,29 +69,40 @@
             pointer-events: none;
         }
 
-        /* --- TARJETA PRINCIPAL (ESTILO LUJO LUXURY) --- */
+        /* --- TARJETA PRINCIPAL (CRISTAL ESMERILADO CON DETALLES ORO) --- */
         .main-container {
             position: relative;
             z-index: 2;
             background: var(--glass-card);
-            border: 1px solid var(--border-gold);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            padding: 4rem 3rem;
-            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 4.5rem 3.5rem;
+            border-radius: 24px;
             text-align: center;
-            max-width: 700px;
+            max-width: 720px;
             width: 90%;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            margin: 2rem 0;
+        }
+
+        /* Borde interior decorativo para más elegancia */
+        .main-container::before {
+            content: '';
+            position: absolute;
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
+            border: 1px solid rgba(230, 185, 96, 0.05);
+            border-radius: 16px;
+            pointer-events: none;
         }
 
         /* Icono de Mezcladora / DJ en Dorado */
         .dj-brand-icon {
-            width: 65px;
-            height: 65px;
-            margin: 0 auto 1.8rem auto;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem auto;
             display: block;
-            filter: drop-shadow(0 0 15px rgba(230, 185, 96, 0.4));
+            filter: drop-shadow(0 0 12px rgba(230, 185, 96, 0.35));
         }
 
         .dj-brand-icon svg {
@@ -102,11 +112,11 @@
         }
 
         .dj-name {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             text-transform: uppercase;
-            letter-spacing: 8px;
-            color: #b1b1b8;
-            margin-bottom: 0.8rem;
+            letter-spacing: 9px;
+            color: #b5b5be;
+            margin-bottom: 0.6rem;
             font-weight: 500;
         }
 
@@ -116,21 +126,11 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 0.5rem;
+            margin-bottom: 3.5rem; /* Ajustado el espacio hacia abajo al quitar el tag */
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 2px 10px rgba(0,0,0,0.5));
-        }
-
-        .release-tag {
-            font-size: 0.85rem;
-            color: var(--gold-primary);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 800;
-            margin-bottom: 3.5rem;
-            opacity: 0.9;
         }
 
         /* --- RELOJ DE CUENTA REGRESIVA --- */
@@ -142,25 +142,19 @@
         }
 
         .time-segment {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.45);
             border: 1px solid rgba(230, 185, 96, 0.08);
-            border-radius: 20px;
+            border-radius: 16px;
             padding: 1.5rem;
-            min-width: 110px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            position: relative;
-            overflow: hidden;
+            min-width: 115px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
         }
 
-        /* Brillo sutil superior en cada caja */
-        .time-segment::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,243,209,0.3), transparent);
+        .time-segment:hover {
+            border-color: rgba(230, 185, 96, 0.25);
+            box-shadow: 0 0 25px rgba(230, 185, 96, 0.1);
+            transform: translateY(-3px);
         }
 
         .time-value {
@@ -176,10 +170,10 @@
         }
 
         .time-title {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            color: #71717a;
+            color: #6e6e77;
             font-weight: 600;
         }
 
@@ -189,8 +183,8 @@
             align-items: center;
             background: var(--gold-gradient);
             color: #000000;
-            padding: 1.1rem 3rem;
-            font-size: 0.9rem;
+            padding: 1.1rem 3.5rem;
+            font-size: 0.85rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 3px;
@@ -199,40 +193,71 @@
             cursor: pointer;
             text-decoration: none;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 30px rgba(191, 149, 63, 0.25);
+            box-shadow: 0 10px 30px rgba(191, 149, 63, 0.2);
+            margin-bottom: 3.5rem;
         }
 
         .btn-gold:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 40px rgba(191, 149, 63, 0.45);
-            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(191, 149, 63, 0.4);
+            filter: brightness(1.05);
+        }
+
+        /* --- ENLACES A REDES SOCIALES / PLATAFORMAS --- */
+        .social-divider {
+            width: 60px;
+            height: 1px;
+            background: rgba(230, 185, 96, 0.2);
+            margin: 0 auto 1.8rem auto;
+        }
+
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+        }
+
+        .social-icon {
+            color: #71717a;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .social-icon:hover {
+            color: var(--gold-primary);
+            filter: drop-shadow(0 0 8px rgba(230, 185, 96, 0.6));
+            transform: scale(1.15);
         }
 
         /* --- RESPONSIVO --- */
         @media (max-width: 600px) {
-            .main-container { padding: 3rem 1.5rem; }
-            .track-title { font-size: 2rem; }
-            .countdown-wrapper { gap: 0.8rem; }
-            .time-segment { min-width: 80px; padding: 1rem 0.5rem; border-radius: 14px; }
+            .main-container { padding: 3.5rem 1.5rem; }
+            .track-title { font-size: 2.1rem; margin-bottom: 2.5rem; }
+            .countdown-wrapper { gap: 0.7rem; }
+            .time-segment { min-width: 82px; padding: 1.1rem 0.5rem; border-radius: 12px; }
             .time-value { font-size: 2.2rem; }
-            .time-title { font-size: 0.65rem; letter-spacing: 1px; }
-            .btn-gold { padding: 1rem 2.2rem; font-size: 0.8rem; }
+            .time-title { font-size: 0.6rem; letter-spacing: 1px; }
+            .btn-gold { padding: 1rem 2.5rem; font-size: 0.8rem; width: 100%; justify-content: center; }
+            .social-container { gap: 1.3rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Luces de ambiente traseras -->
     <div class="ambient-glow">
         <div class="glow-center"></div>
     </div>
 
-    <!-- Lienzo interactivo de destellos dorados -->
     <canvas id="particle-canvas"></canvas>
 
     <div class="main-container">
         
-        <!-- Icono Vectorial de Tornamesa/DJ en oro metálico -->
         <div class="dj-brand-icon">
             <svg viewBox="0 0 24 24">
                 <defs>
@@ -249,9 +274,7 @@
 
         <p class="dj-name">Esteban Martinez DJ</p>
         <h1 class="track-title">¿Quien es esteban martinez?</h1>
-        <p class="release-tag">Estreno Exclusivo</p>
 
-        <!-- Cronómetro -->
         <div class="countdown-wrapper">
             <div class="time-segment">
                 <span class="time-value" id="hours">00</span>
@@ -267,20 +290,35 @@
             </div>
         </div>
 
-        <!-- Call To Action -->
-        <a href="#" class="btn-gold" id="presave-link">Pre-Salvar Sonido</a>
+        <a href="#" class="btn-gold" id="presave-link">Pre-Salvar Lanzamiento</a>
+
+        <div class="social-divider"></div>
+
+        <div class="social-container">
+            <a href="#" class="social-icon" target="_blank" title="Instagram">
+                <svg viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8C2,4.6 4.6,2 7.8,2M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M18,4.75A0.75,0.75 0 1,0 18,6.25A0.75,0.75 0 0,0 18,4.75Z"/></svg>
+            </a>
+            <a href="#" class="social-icon" target="_blank" title="Spotify">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.565.387-.86.207-2.377-1.454-5.37-1.783-8.893-.982-.336.075-.668-.135-.744-.47-.075-.336.135-.668.47-.743 3.856-.88 7.15-.51 9.822 1.13.296.178.387.563.206.858zm1.224-2.72c-.227.367-.707.487-1.074.26-2.72-1.672-6.87-2.157-10.082-1.182-.413.125-.847-.107-.972-.52-.125-.413.107-.847.52-.972 3.676-1.114 8.243-.574 11.35 1.34.366.226.486.706.258 1.074zm.105-2.833C14.384 8.817 8.517 8.622 5.13 9.65c-.53.16-1.09-.142-1.25-.673-.16-.53.14-1.09.672-1.25 3.882-1.18 10.364-.96 14.43 1.455.477.283.633.898.35 1.375-.282.477-.897.633-1.375.35z"/></svg>
+            </a>
+            <a href="#" class="social-icon" target="_blank" title="SoundCloud">
+                <svg viewBox="0 0 24 24"><path d="M11.56 12.78c0-.52.04-1.02.13-1.51l-.7-.03c-.27 0-.5.22-.5.5v5.04c0 .28.23.5.5.5l.65-.03c-.05-.44-.08-.94-.08-1.47v-3zm2.14-2.75c-.03.43-.05.88-.05 1.36v2.96c0 .54.02 1.05.06 1.51l.73-.02c.28 0 .5-.22.5-.5v-4.9c0-.28-.22-.5-.5-.5l-.74.09zm-4.33 3.61c0-.29.02-.57.06-.85l-.66-.11c-.24-.04-.48.13-.51.37l-.23 1.95c-.03.25.13.48.38.51l.63.08c-.04-.3-.07-.61-.07-.95zm6.53-3.99c-.06.4-.09.83-.09 1.28v3.2c0 .5.03.96.1 1.37l.87-.02c.28 0 .5-.22.5-.5V10.2c0-.28-.22-.5-.5-.5l-.88.14zm-8.67 3.51c0-.14.02-.28.04-.42l-.57-.17c-.22-.06-.45.06-.52.28l-.51 1.62c-.07.22.06.46.28.52l.53.16c.03-.23.05-.48.05-.72.01-.43.32-.78.7-.78zm10.74-2.33c-.42 0-.82.09-1.18.25-.3-.9-1.15-1.55-2.15-1.55-.47 0-.91.15-1.28.4-.28-1.33-1.47-2.33-2.89-2.33-.87 0-1.66.37-2.22.97-.04.05-.08.1-.12.16v7.7c.36.19.77.3 1.2.3h8.64c1.55 0 2.81-1.26 2.81-2.81 0-1.54-1.26-2.79-2.81-2.79z"/></svg>
+            </a>
+            <a href="#" class="social-icon" target="_blank" title="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.516 0-9.387.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.503 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.508 9.387.508 9.387.508s7.517 0 9.387-.508a3.003 3.003 0 0 0 2.11-2.11c.503-1.87 0.503-5.837 0.503-5.837s0-3.967-.503-5.837zm-14.16 8.356V9.481l6.187 3.018-6.188 3.02z"/></svg>
+            </a>
+        </div>
 
     </div>
 
     <script>
         /* ===================================================
-           LÓGICA DE LA CUENTA REGRESIVA (AUTOMÁTICA)
+           LÓGICA DEL CRONÓMETRO - EN VIVO (HORA COLOMBIA)
            =================================================== */
         function getTargetDate() {
             const now = new Date();
-            // Mañana es la fecha actual + 1 día
+            // Mañana a las 5:00 PM
             const target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-            // Configurar a las 17:00:00 (5:00 PM) hora local
             target.setHours(17, 0, 0, 0);
             return target.getTime();
         }
@@ -296,16 +334,13 @@
                 document.getElementById("hours").innerHTML = "00";
                 document.getElementById("minutes").innerHTML = "00";
                 document.getElementById("seconds").innerHTML = "00";
-                document.querySelector(".release-tag").innerHTML = "¡YA DISPONIBLE!";
                 return;
             }
 
-            // Cálculo matemático del tiempo restante (Horas totales, minutos y segundos)
             const hours = Math.floor(difference / (1000 * 60 * 60));
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-            // Se añade un cero a la izquierda si el valor es menor a 10
             document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
             document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
             document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
@@ -313,7 +348,7 @@
 
 
         /* ===================================================
-           SISTEMA DE DESTELLOS DORADOS (CANVAS)
+           SISTEMA DE PARTÍCULAS DORADAS MEJORADO
            =================================================== */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
@@ -326,32 +361,30 @@
         resizeCanvas();
 
         const particles = [];
-        const particleCount = 45; // Cantidad equilibrada para que se vea elegante y no saturado
+        const particleCount = 60;
 
         class GoldParticle {
             constructor() {
                 this.reset();
-                this.y = Math.random() * canvas.height; // Distribución inicial vertical
+                this.y = Math.random() * canvas.height;
             }
 
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = canvas.height + Math.random() * 20;
-                this.size = Math.random() * 2.5 + 0.5; // Tamaños finos
-                this.speedY = Math.random() * 0.6 + 0.2; // Movimiento lento hacia arriba
-                this.speedX = (Math.random() - 0.5) * 0.3; 
+                this.size = Math.random() * 2.8 + 0.6;
+                this.speedY = Math.random() * 0.7 + 0.3;
+                this.speedX = (Math.random() - 0.5) * 0.4; 
                 this.opacity = Math.random() * 0.5 + 0.2;
-                this.fadeSpeed = Math.random() * 0.005 + 0.002;
             }
 
             update() {
                 this.y -= this.speedY;
                 this.x += this.speedX;
                 
-                // Efecto centelleo (flicker)
-                this.opacity += (Math.random() - 0.5) * 0.04;
-                if(this.opacity < 0.1) this.opacity = 0.1;
-                if(this.opacity > 0.7) this.opacity = 0.7;
+                this.opacity += (Math.random() - 0.5) * 0.03;
+                if(this.opacity < 0.15) this.opacity = 0.15;
+                if(this.opacity > 0.75) this.opacity = 0.75;
 
                 if (this.y < -10) {
                     this.reset();
@@ -361,10 +394,9 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                // Color dorado premium translúcido
                 ctx.fillStyle = `rgba(230, 185, 96, ${this.opacity})`;
-                ctx.shadowBlur = this.size * 3;
-                ctx.shadowColor = '#bf953f';
+                ctx.shadowBlur = this.size * 4;
+                ctx.shadowColor = '#b38728';
                 ctx.fill();
             }
         }
@@ -375,7 +407,6 @@
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Resetear shadowBlur para que no afecte a todo
             ctx.shadowBlur = 0; 
             
             for (let i = 0; i < particles.length; i++) {
