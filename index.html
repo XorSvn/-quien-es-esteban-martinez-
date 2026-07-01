@@ -315,15 +315,9 @@
         /* ===================================================
            LÓGICA DEL CRONÓMETRO - EN VIVO (HORA COLOMBIA)
            =================================================== */
-        function getTargetDate() {
-            const now = new Date();
-            // Mañana a las 5:00 PM
-            const target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-            target.setHours(17, 0, 0, 0);
-            return target.getTime();
-        }
 
-        const countdownTarget = getTargetDate();
+            // Mañana a las 5:00 PM
+        const countdownTarget = new Date("2026-07-01T17:00:00-05:00").getTime();
 
         const timerInterval = setInterval(function() {
             const now = new Date().getTime();
