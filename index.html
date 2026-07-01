@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Esteban Martinez DJ - ¿Quien es esteban martinez?</title>
+    <!-- Fuentes premium y modernas -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;500;700;800&display=swap" rel="stylesheet">
@@ -69,7 +70,7 @@
             pointer-events: none;
         }
 
-        /* --- TARJETA PRINCIPAL (CRISTAL ESMERILADO CON DETALLES ORO) --- */
+        /* --- TARJETA PRINCIPAL (CRISTAL ESMERILADO) --- */
         .main-container {
             position: relative;
             z-index: 2;
@@ -86,7 +87,6 @@
             margin: 2rem 0;
         }
 
-        /* Borde interior decorativo para más elegancia */
         .main-container::before {
             content: '';
             position: absolute;
@@ -126,7 +126,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 3.5rem; /* Ajustado el espacio hacia abajo al quitar el tag */
+            margin-bottom: 3.5rem;
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -139,6 +139,7 @@
             justify-content: center;
             gap: 1.5rem;
             margin-bottom: 3.5rem;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
         .time-segment {
@@ -177,10 +178,35 @@
             font-weight: 600;
         }
 
-        /* --- BOTÓN DE PRE-SAVE PREMIUM --- */
+        /* --- MENSAJE CUANDO LLEGA A 0 --- */
+        .live-message {
+            display: none;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin-bottom: 3.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .live-message span {
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            font-size: 1.6rem;
+            margin-top: 0.5rem;
+            filter: drop-shadow(0 0 10px rgba(230,185,96,0.3));
+        }
+
+        /* --- BOTÓN PREMIUM CON ANIMACIÓN --- */
         .btn-gold {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             background: var(--gold-gradient);
             color: #000000;
             padding: 1.1rem 3.5rem;
@@ -195,6 +221,9 @@
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 10px 30px rgba(191, 149, 63, 0.2);
             margin-bottom: 3.5rem;
+            position: relative;
+            overflow: hidden;
+            min-width: 320px;
         }
 
         .btn-gold:hover {
@@ -203,7 +232,23 @@
             filter: brightness(1.05);
         }
 
-        /* --- ENLACES A REDES SOCIALES / PLATAFORMAS --- */
+        /* Animación de carga interna (Spinner) */
+        .btn-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: #000000;
+            animation: spin 0.8s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- ENLACES A REDES SOCIALES --- */
         .social-divider {
             width: 60px;
             height: 1px;
@@ -243,7 +288,9 @@
             .time-segment { min-width: 82px; padding: 1.1rem 0.5rem; border-radius: 12px; }
             .time-value { font-size: 2.2rem; }
             .time-title { font-size: 0.6rem; letter-spacing: 1px; }
-            .btn-gold { padding: 1rem 2.5rem; font-size: 0.8rem; width: 100%; justify-content: center; }
+            .btn-gold { padding: 1rem 2.5rem; font-size: 0.8rem; min-width: 100%; width: 100%; }
+            .live-message { font-size: 1.1rem; }
+            .live-message span { font-size: 1.3rem; }
             .social-container { gap: 1.3rem; }
         }
     </style>
@@ -275,7 +322,8 @@
         <p class="dj-name">Esteban Martinez DJ</p>
         <h1 class="track-title">¿Quien es esteban martinez?</h1>
 
-        <div class="countdown-wrapper">
+        <!-- Bloque del Cronómetro -->
+        <div class="countdown-wrapper" id="countdown-container">
             <div class="time-segment">
                 <span class="time-value" id="hours">00</span>
                 <span class="time-title">Horas</span>
@@ -290,7 +338,17 @@
             </div>
         </div>
 
-        <a href="#" class="btn-gold" id="presave-link">Pre-Salvar Lanzamiento</a>
+        <!-- Mensaje Revelado (Oculto por defecto) -->
+        <div class="live-message" id="live-text">
+            ¡Lanzamiento Oficial!
+            <span>El set ya está disponible en SoundCloud</span>
+        </div>
+
+        <!-- Botón de Acción Dinámico -->
+        <button class="btn-gold" id="presave-btn">
+            <span class="btn-spinner" id="spinner"></span>
+            <span id="btn-text">Pre-Salvar Lanzamiento</span>
+        </button>
 
         <div class="social-divider"></div>
 
@@ -313,11 +371,31 @@
 
     <script>
         /* ===================================================
-           LÓGICA DEL CRONÓMETRO - EN VIVO (HORA COLOMBIA)
+           LÓGICA DEL CRONÓMETRO INTERACTIVO
            =================================================== */
-
-            // Mañana a las 5:00 PM
         const countdownTarget = new Date("2026-07-01T17:00:00-05:00").getTime();
+
+        function revealRelease() {
+            const countdownContainer = document.getElementById("countdown-container");
+            const liveText = document.getElementById("live-text");
+            const presaveBtn = document.getElementById("presave-btn");
+
+            // Ocultar cronómetro con suavidad
+            countdownContainer.style.opacity = "0";
+            setTimeout(() => {
+                countdownContainer.style.display = "none";
+                
+                // Mostrar el texto especial de SoundCloud
+                liveText.style.display = "block";
+                setTimeout(() => {
+                    liveText.style.opacity = "1";
+                    liveText.style.transform = "translateY(0)";
+                }, 50);
+
+                // Modificar el botón principal para que refleje que ya salió
+                document.getElementById("btn-text").innerText = "Escuchar Set en SoundCloud";
+            }, 500);
+        }
 
         const timerInterval = setInterval(function() {
             const now = new Date().getTime();
@@ -325,9 +403,7 @@
 
             if (difference <= 0) {
                 clearInterval(timerInterval);
-                document.getElementById("hours").innerHTML = "00";
-                document.getElementById("minutes").innerHTML = "00";
-                document.getElementById("seconds").innerHTML = "00";
+                revealRelease();
                 return;
             }
 
@@ -342,7 +418,56 @@
 
 
         /* ===================================================
-           SISTEMA DE PARTÍCULAS DORADAS MEJORADO
+           ANIMACIÓN PREMIUM AL PRESIONAR EL BOTÓN
+           =================================================== */
+        document.getElementById("presave-btn").addEventListener("click", function() {
+            const btn = this;
+            const spinner = document.getElementById("spinner");
+            const btnText = document.getElementById("btn-text");
+
+            // Evitar múltiples clics mientras carga
+            if(btn.classList.contains("loading")) return;
+            btn.classList.add("loading");
+
+            // Fase 1: Mostrar animación de carga
+            spinner.style.display = "inline-block";
+            btnText.innerText = "Conectando...";
+            btn.style.filter = "brightness(0.9)";
+            btn.style.transform = "scale(0.97)";
+
+            setTimeout(() => {
+                // Fase 2: Mostrar éxito
+                spinner.style.display = "none";
+                btnText.innerText = "¡Agregado con éxito!";
+                btn.style.background = "linear-gradient(135deg, #22c55e 0%, #4ade80 100%)"; // Cambia temporalmente a verde premium
+                btn.style.color = "#ffffff";
+                btn.style.transform = "scale(1)";
+
+                setTimeout(() => {
+                    // Fase 3: Redirección (Aquí pones tu link real de SoundCloud o Spotify en vez de '#')
+                    window.open("https://soundcloud.com", "_blank");
+
+                    // Resetear el botón a su estado normal después de abrir la pestaña
+                    setTimeout(() => {
+                        btn.classList.remove("loading");
+                        btn.style.background = "var(--gold-gradient)";
+                        btn.style.color = "#000000";
+                        // Cambia el texto final según si el contador ya llegó a 0 o no
+                        const now = new Date().getTime();
+                        if(countdownTarget - now <= 0) {
+                            btnText.innerText = "Escuchar Set en SoundCloud";
+                        } else {
+                            btnText.innerText = "Pre-Salvar Lanzamiento";
+                        }
+                    }, 1000);
+
+                }, 1200);
+            }, 1800); // 1.8 segundos de carga súper elegante
+        });
+
+
+        /* ===================================================
+           SISTEMA DE PARTÍCULAS DORADAS
            =================================================== */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
